@@ -10,7 +10,7 @@ import { send } from 'process';
 
   // Set the network port
   const port = process.env.PORT || 8082;
-  
+
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
@@ -28,30 +28,30 @@ import { send } from 'process';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
- 
-  app.get( "/filteredimage", async ( req, res ) => {
+
+  app.get( "/filteredimage", async (req:express.Request, res:express.Response ) => {
     let image_url : string  = req.query["image_url"]
-      // 1.  validate image query
-      if(!image_url){
-        return res.status(400).send(`Image URL is required`);
-      } 
-      // 2 call filterImageFromURL(image_url) to filter the image
-      let filtered : string  = await filterImageFromURL(image_url) 
-      
-
-      // 3. send the response of the resulting string 
-      res.status(200).sendFile(filtered)
-      
+    // 1.  validate image query
+    if(!image_url){
+      return res.status(400).send(`Image URL is required`);
+    }
+    // 2 call filterImageFromURL(image_url) to filter the image
+    let filtered : string  = await filterImageFromURL(image_url)
 
 
-      // 4. delete the resulting image from the response
-      if(res.finished){
-        deleteLocalFiles([filtered])
-      }
+    // 3. send the response of the resulting string
+    res.status(200).sendFile(filtered)
+
+
+
+    // 4. delete the resulting image from the response
+    if(res.finished){
+      deleteLocalFiles([filtered])
+    }
   } );
-  
+
   //! END @TODO1
-  
+
 
   // Root Endpoint
   // Displays a simple message to the user
@@ -59,12 +59,11 @@ import { send } from 'process';
     res.send("try GET /filteredimage?image_url={{}}")
   } );
 
-  
-  
+
 
   // Start the Server
   app.listen( port, () => {
-      console.log( `server running http://localhost:${ port }` );
-      console.log( `press CTRL+C to stop server` );
+    console.log( `server running http://localhost:${ port }` );
+    console.log( `press CTRL+C to stop server` );
   } );
 })();
