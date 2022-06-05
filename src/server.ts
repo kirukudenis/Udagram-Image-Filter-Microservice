@@ -59,8 +59,7 @@ import { send } from 'process';
     res.send("try GET /filteredimage?image_url={{}}")
   } );
 
-  
-  
+
 
   // Start the Server
   app.listen( port, () => {
